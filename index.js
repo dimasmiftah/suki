@@ -1,5 +1,5 @@
-const HLRTelkomsel = require('./HLRTelkomsel');
 const puppeteer = require('puppeteer');
+const HLRTelkomsel = require('./HLRTelkomsel');
 
 const randomProperty = (obj) => {
   const keys = Object.keys(obj);
@@ -19,6 +19,7 @@ const makeItTwenty = (number) => {
   }
   return numberArray.join('');
 };
+
 const messageContent = [
   'Jalan-jalan ke parangtritis',
   'Telanjang bulat gatau malu',
@@ -36,14 +37,14 @@ const sendMessage = async () => {
     waitUntil: 'networkidle2',
   });
 
-  const messageInputSelector =
-    '#main > footer > div._3SvgF._1mHgA.copyable-area > div.DuUXI > div > div._1awRl.copyable-text.selectable-text';
   try {
-    //wait message input
+    // wait message input to show up
+    const messageInputSelector =
+      '#main > footer > div._3SvgF._1mHgA.copyable-area > div.DuUXI > div > div._1awRl.copyable-text.selectable-text';
     await page.waitForSelector(messageInputSelector, { timeout: 10000 });
 
     for (let i = 0; i < messageContent.length; i++) {
-      //type message
+      // type message
       await page.type(messageInputSelector, messageContent[i]);
       // send message
       await page.click('._2Ujuu');
@@ -62,10 +63,9 @@ const sendMessage = async () => {
       '#side > header > div._1eNef > div > span > div._2wfYK.lpKIg > span > div > ul > li:nth-child(7) > div'
     );
 
-    // close browser
     await browser.close();
   } catch (error) {
-    // close browser
+    console.log(error);
     await browser.close();
     await sendMessage();
   }
