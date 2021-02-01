@@ -1,5 +1,11 @@
-const puppeteer = require('puppeteer');
 const HLRTelkomsel = require('./HLRTelkomsel');
+const puppeteer = require('puppeteer');
+
+const generatePhoneNumber = () => {
+  const randomRegion = randomProperty(HLRTelkomsel);
+  const randomHLR = randomElement(randomRegion);
+  return makeItTwenty(randomHLR);
+};
 
 const randomProperty = (obj) => {
   const keys = Object.keys(obj);
@@ -20,17 +26,8 @@ const makeItTwenty = (number) => {
   return numberArray.join('');
 };
 
-const messageContent = [
-  'Jalan-jalan ke parangtritis',
-  'Telanjang bulat gatau malu',
-  'Aku bukan cowok romantis',
-  'Tapi mau ngga jadi pacarku?',
-];
-
 const sendMessage = async () => {
-  const randomRegion = randomProperty(HLRTelkomsel);
-  const randomHLR = randomElement(randomRegion);
-  const randomPhoneNumber = makeItTwenty(randomHLR);
+  const randomPhoneNumber = generatePhoneNumber();
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.goto(`https://web.whatsapp.com/send?phone=${randomPhoneNumber}`, {
@@ -43,26 +40,28 @@ const sendMessage = async () => {
       '#main > footer > div._3SvgF._1mHgA.copyable-area > div.DuUXI > div > div._1awRl.copyable-text.selectable-text';
     await page.waitForSelector(messageInputSelector, { timeout: 10000 });
 
+    const messageContent = [
+      'Jalan-jalan ke parangtritis',
+      'Telanjang bulat gatau malu',
+      'Aku bukan cowok romantis',
+      'Tapi mau ngga jadi pacarku?',
+    ];
     for (let i = 0; i < messageContent.length; i++) {
       // type message
       await page.type(messageInputSelector, messageContent[i]);
-      // send message
+      // click send
       await page.click('._2Ujuu');
     }
 
-    // wait for a bit
     page.waitForTimeout(3000);
-
     // open menu
     await page.click(
       '#side > header > div._1eNef > div > span > div:nth-child(3) > div'
     );
-
     // click logout
     await page.click(
       '#side > header > div._1eNef > div > span > div._2wfYK.lpKIg > span > div > ul > li:nth-child(7) > div'
     );
-
     await browser.close();
   } catch (error) {
     console.log(error);
