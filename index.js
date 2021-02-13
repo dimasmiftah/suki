@@ -41,10 +41,8 @@ const sendMessage = async () => {
     await page.waitForSelector(messageInputSelector, { timeout: 10000 });
 
     const messageContent = [
-      'Jalan-jalan ke parangtritis',
-      'Telanjang bulat gatau malu',
-      'Aku bukan cowok romantis',
-      'Tapi mau ngga jadi pacarku?',
+      "i'm so sorry",
+      'https://www.tiktok.com/@dimasmiftah?lang=en',
     ];
     for (let i = 0; i < messageContent.length; i++) {
       // type message
