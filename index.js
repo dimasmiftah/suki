@@ -62,7 +62,6 @@ const sendMessage = async () => {
     );
     await browser.close();
   } catch (error) {
-    console.log(error);
     await browser.close();
     await sendMessage();
   }
