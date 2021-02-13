@@ -38,7 +38,7 @@ const sendMessage = async () => {
     // wait message input to show up
     const messageInputSelector =
       '#main > footer > div._3SvgF._1mHgA.copyable-area > div.DuUXI > div > div._1awRl.copyable-text.selectable-text';
-    await page.waitForSelector(messageInputSelector, { timeout: 10000 });
+    await page.waitForSelector(messageInputSelector, { timeout: 20000 });
 
     const messageContent = [
       "i'm so sorry",
@@ -46,7 +46,7 @@ const sendMessage = async () => {
     ];
     for (let i = 0; i < messageContent.length; i++) {
       // type message
-      await page.type(messageInputSelector, messageContent[i]);
+      await page.type(messageInputSelector, messageContent[i], { delay: 100 });
       // click send
       await page.click('._2Ujuu');
     }
